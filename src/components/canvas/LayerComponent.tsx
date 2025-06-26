@@ -1,5 +1,5 @@
 import { useStorage } from "@liveblocks/react";
-import { memo } from "react";
+import {JSX, memo} from "react";
 import { LayerType } from "~/types";
 import Rectangle from "./Rectangle";
 import Ellipse from "./Ellipse";
@@ -14,8 +14,8 @@ const LayerComponent = memo(
      }: {
         id: string;
         onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
-    }) => {
-        const layer = useStorage((root) => root.layers.get(id));
+    }): JSX.Element | null => {
+        const layer = useStorage((root: any) => root.layers.get(id));
         if (!layer) {
             return null;
         }
