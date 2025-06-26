@@ -57,7 +57,7 @@ export default function Canvas({
     const [leftIsMinimized, setLeftIsMinimized] = useState(false);
     const roomColor = useStorage((root) => (root as any).roomColor);
     const layerIds = useStorage((root) => (root as any).layerIds);
-    const pencilDraft = useSelf((me) => me.presence.pencilDraft);
+    const pencilDraft = useSelf((me) => (me as any).presence.pencilDraft);
     const deleteLayers = useDeleteLayers();
     const [canvasState, setState] = useState<CanvasState>({
         mode: CanvasMode.None,
