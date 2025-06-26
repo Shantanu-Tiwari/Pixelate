@@ -1,6 +1,6 @@
 "use client";
 
-import { LiveList, LiveMap, LiveObject } from "@liveblocks/client";
+import { LiveList, LiveMap, LiveObject, LsonObject } from "@liveblocks/client";
 import {
     ClientSideSuspense,
     LiveblocksProvider,
@@ -26,11 +26,11 @@ export function Room({
                     penColor: null,
                     pencilDraft: null,
                 }}
-                initialStorage={{
+                initialStorage={() => ({
                     roomColor: { r: 30, g: 30, b: 30 },
-                    layers: new LiveMap<string, LiveObject<Layer>>(),
-                    layerIds: new LiveList([]),
-                }}
+                    layers: new LiveMap<string, LiveObject<Layer & LsonObject>>(),
+                    layerIds: new LiveList<string>([]),
+                })}
             >
                 <ClientSideSuspense
                     fallback={
@@ -44,7 +44,7 @@ export function Room({
                         </div>
                     }
                 >
-                    {children}
+                    {() => children as ReactNode}
                 </ClientSideSuspense>
             </RoomProvider>
         </LiveblocksProvider>
