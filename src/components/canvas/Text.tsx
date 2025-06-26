@@ -2,6 +2,7 @@ import { useMutation } from "@liveblocks/react";
 import { useEffect, useRef, useState } from "react";
 import { EllipseLayer, RectangleLayer, TextLayer } from "~/types";
 import { colorToCss } from "~/utils";
+import { LiveObject } from "@liveblocks/client";
 
 export default function Text({
                                  id,
@@ -28,12 +29,12 @@ export default function Text({
 
     const [isEditing, setIsEditing] = useState(false);
     const [inputValue, setInputValue] = useState(text);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const updateText = useMutation(
         ({ storage }, newText: string) => {
-            const liveLayers = storage.get("layers");
-            const layer = liveLayers.get(id);
+            const liveLayers = storage.get("layers") as any;
+            const layer = liveLayers.get(id) as LiveObject<TextLayer>;
             if (layer) {
                 layer.update({ text: newText });
             }
@@ -42,8 +43,11 @@ export default function Text({
     );
 
     useEffect(() => {
-        if (isEditing && inputRef.current) {
-            inputRef.current.focus();
+        if (isEditing) {
+            const input = inputRef.current;
+            if (input) {
+                input.focus();
+            }
         }
     }, [isEditing]);
 
@@ -60,7 +64,7 @@ export default function Text({
         updateText(inputValue);
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             setIsEditing(false);
             updateText(inputValue);
@@ -85,6 +89,8 @@ export default function Text({
                             border: "none",
                             outline: "none",
                             background: "transparent",
+                            fontFamily: fontFamily,
+                            fontWeight: fontWeight,
                         }}
                     />
                 </foreignObject>
@@ -106,9 +112,10 @@ export default function Text({
                         fontSize={fontSize}
                         fill={colorToCss(fill)}
                         stroke={colorToCss(stroke)}
-                        opacity={opacity}
+                        opacity={opacity / 100} // Convert to decimal if opacity is 0-100
                         fontFamily={fontFamily}
                         fontWeight={fontWeight}
+                        className="cursor-pointer"
                     >
                         {text}
                     </text>
