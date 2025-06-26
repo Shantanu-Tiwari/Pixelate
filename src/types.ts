@@ -136,3 +136,9 @@ export enum CanvasMode {
     Pressing,
     RightClick,
 }
+export type Presence = {
+    cursor: Point | null;
+    selection: string[];
+    pencilDraft: number[][] | null;
+    penColor: Color | null;
+};

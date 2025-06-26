@@ -10,9 +10,10 @@ declare global {
     Presence: {
       cursor: { x: number; y: number } | null;
       // Add other presence properties you might need
-      // selection?: string[];
+      selection: string[];
+      pencilDraft: number[][] | null;
+      penColor: { r: number; g: number; b: number } | null;
     };
-
     // The Storage tree for the room, for useMutation, useStorage, etc.
     Storage: {
       layers: LiveMap<string, Layer>;
