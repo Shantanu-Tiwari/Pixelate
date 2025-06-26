@@ -125,7 +125,7 @@ export default function Canvas({
 
             history.pause();
             e.stopPropagation();
-            if (!self.presence.selection.includes(layerId)) {
+            if ((!self.presence as any).selection.includes(layerId)) {
                 setMyPresence(
                     {
                         selection: [layerId],
@@ -223,7 +223,7 @@ export default function Canvas({
 
     const insertPath = useMutation(({ storage, self, setMyPresence }) => {
         const liveLayers = storage.get("layers");
-        const { pencilDraft } = self.presence;
+        const { pencilDraft } = (self.presence as any);
 
         if (
             pencilDraft === null ||
@@ -260,7 +260,7 @@ export default function Canvas({
             };
 
             const liveLayers = storage.get("layers");
-            for (const id of self.presence.selection) {
+            for (const id of (self.presence as any).selection) {
                 const layer = liveLayers.get(id);
                 if (layer) {
                     layer.update({
@@ -289,8 +289,8 @@ export default function Canvas({
 
             const liveLayers = storage.get("layers");
 
-            if (self.presence.selection.length > 0) {
-                const layer = liveLayers.get(self.presence.selection[0]!);
+            if ((self.presence as any).selection.length > 0) {
+                const layer = liveLayers.get((self.presence as any).selection[0]!);
                 if (layer) {
                     layer.update(bounds);
                 }
@@ -302,7 +302,7 @@ export default function Canvas({
     );
 
     const unselectLayers = useMutation(({ self, setMyPresence }) => {
-        if (self.presence.selection.length > 0) {
+        if ((self.presence as any).selection.length > 0) {
             setMyPresence({ selection: [] }, { addToHistory: true });
         }
     }, []);
@@ -319,7 +319,7 @@ export default function Canvas({
 
     const continueDrawing = useMutation(
         ({ self, setMyPresence }, point: Point, e: React.PointerEvent) => {
-            const { pencilDraft } = self.presence;
+            const { pencilDraft } = (self.presence as any);
 
             if (
                 canvasState.mode !== CanvasMode.Pencil ||
