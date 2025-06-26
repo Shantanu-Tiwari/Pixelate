@@ -487,7 +487,7 @@ export default function Canvas({
                                 transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.zoom})`,
                             }}
                         >
-                            {layerIds?.map((layerId) => (
+                            {layerIds?.map((layerId: string) => (
                                 <LayerComponent
                                     key={layerId}
                                     id={layerId}
