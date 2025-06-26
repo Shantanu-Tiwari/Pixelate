@@ -162,12 +162,12 @@ export default function Canvas({
             layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text,
             position: Point,
         ) => {
-            const liveLayers = storage.get("layers");
+            const liveLayers = (storage as any).get("layers");
             if (liveLayers.size >= MAX_LAYERS) {
                 return;
             }
 
-            const liveLayerIds = storage.get("layerIds");
+            const liveLayerIds = (storage as any).get("layerIds");
             const layerId = nanoid();
             let layer: LiveObject<Layer> | null = null;
 
@@ -222,7 +222,7 @@ export default function Canvas({
     );
 
     const insertPath = useMutation(({ storage, self, setMyPresence }) => {
-        const liveLayers = storage.get("layers");
+        const liveLayers = (storage as any).get("layers");
         const { pencilDraft } = (self.presence as any);
 
         if (
@@ -242,7 +242,7 @@ export default function Canvas({
             ),
         );
 
-        const liveLayerIds = storage.get("layerIds");
+        const liveLayerIds = (storage as any).get("layerIds");
         liveLayerIds.push(id);
         setMyPresence({ pencilDraft: null });
         setState({ mode: CanvasMode.Pencil });
@@ -259,7 +259,7 @@ export default function Canvas({
                 y: point.y - canvasState.current.y,
             };
 
-            const liveLayers = storage.get("layers");
+            const liveLayers = (storage as any).get("layers");
             for (const id of (self.presence as any).selection) {
                 const layer = liveLayers.get(id);
                 if (layer) {
@@ -287,7 +287,7 @@ export default function Canvas({
                 point,
             );
 
-            const liveLayers = storage.get("layers");
+            const liveLayers = (storage as any).get("layers");
 
             if ((self.presence as any).selection.length > 0) {
                 const layer = liveLayers.get((self.presence as any).selection[0]!);
@@ -375,7 +375,7 @@ export default function Canvas({
     const updateSelectionNet = useMutation(
         ({ storage, setMyPresence }, current: Point, origin: Point) => {
             if (layerIds) {
-                const layers = storage.get("layers").toImmutable();
+                const layers = (storage as any).get("layers").toImmutable();
                 setState({
                     mode: CanvasMode.SelectionNet,
                     origin,
